@@ -14,25 +14,24 @@ const FORMATS = [
 
 function App() {
   return (
-    <div className="min-h-screen bg-[#06080D] text-[#F5F7FA] antialiased">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text-body)] antialiased">
       <Navbar />
 
       <main id="top" className="relative overflow-hidden">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[420px] dot-grid" />
-
         <section className="relative px-5 pb-24 pt-36 sm:px-8 sm:pt-44">
-          <div className="mx-auto flex max-w-[1200px] flex-col items-center text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-[#1C2636] bg-[#0B0F17] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#9FADC0]">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 dot-grid" />
+          <div className="relative mx-auto flex max-w-[1200px] flex-col items-center text-center">
+            <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--bg-elevated)] px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--text-dim)]">
               <span className="h-1.5 w-1.5 rounded-full bg-blue" />
               Personal tool
             </span>
 
-            <h1 className="mt-7 max-w-3xl text-[34px] font-bold leading-[1.1] tracking-[-0.02em] text-white sm:text-[46px]">
+            <h1 className="mt-7 max-w-3xl text-[34px] font-bold leading-[1.1] tracking-[-0.02em] text-[var(--text)] sm:text-[46px]">
               Save media from TikTok, Instagram, YouTube & X.{' '}
               <span className="text-blue">No watermark.</span>
             </h1>
 
-            <p className="mt-5 max-w-xl text-[14px] leading-[1.7] text-[#9FADC0] sm:text-[15px]">
+            <p className="mt-5 max-w-xl text-[14px] leading-[1.7] text-[var(--text-dim)] sm:text-[15px]">
               Paste a link, get the file. Videos, photos, and whole carousels,
               resolved and streamed straight to your device, never stored.
             </p>
@@ -45,10 +44,10 @@ function App() {
               {FORMATS.map((f) => (
                 <div
                   key={f.label}
-                  className="flex flex-col items-center gap-2 rounded-xl border border-[#1C2636] bg-[#0B0F17] px-3 py-4"
+                  className="flex flex-col items-center gap-2 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-3 py-4"
                 >
                   <f.icon className="h-5 w-5 text-blue" />
-                  <span className="text-[12px] font-medium text-[#9FADC0]">{f.label}</span>
+                  <span className="text-[12px] font-medium text-[var(--text-dim)]">{f.label}</span>
                 </div>
               ))}
             </div>

@@ -20,13 +20,13 @@ const STEPS = [
 
 export default function HowItWorks() {
   return (
-    <section id="how" className="border-y border-[#0E1420] bg-[#080B12] py-20">
+    <section id="how" className="border-y border-[var(--border-soft)] bg-[var(--bg-band)] py-20">
       <div className="mx-auto max-w-[1200px] px-5 sm:px-8">
         <Reveal className="max-w-2xl">
-          <h2 className="text-[30px] font-bold tracking-[-0.02em] text-white sm:text-[36px]">
+          <h2 className="text-[30px] font-bold tracking-[-0.02em] text-[var(--text)] sm:text-[36px]">
             Three steps, that&apos;s it
           </h2>
-          <p className="mt-3 text-[14px] leading-[1.7] text-[#9FADC0]">
+          <p className="mt-3 text-[14px] leading-[1.7] text-[var(--text-dim)]">
             No account, no queue, no processing. You paste the link and keep the file.
           </p>
         </Reveal>
@@ -34,12 +34,12 @@ export default function HowItWorks() {
         <div className="mt-12 grid gap-4 sm:grid-cols-3">
           {STEPS.map((s, i) => (
             <Reveal key={s.n} delay={i * 80}>
-              <div className="group h-full rounded-2xl border border-[#1C2636] bg-[#0B0F17] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#2A6BFF]/40">
+              <div className="group h-full rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#2A6BFF]/40">
                 <span className="text-[34px] font-bold tracking-tight text-blue/80">
                   {s.n}
                 </span>
-                <h3 className="mt-3 text-[15px] font-semibold text-white">{s.title}</h3>
-                <p className="mt-2 text-[13px] leading-[1.7] text-[#9FADC0]">{s.desc}</p>
+                <h3 className="mt-3 text-[15px] font-semibold text-[var(--text)]">{s.title}</h3>
+                <p className="mt-2 text-[13px] leading-[1.7] text-[var(--text-dim)]">{s.desc}</p>
               </div>
             </Reveal>
           ))}

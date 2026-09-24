@@ -2,16 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #06080d;
+  --bg-band: #080b12;
+  --bg-elevated: #0b0f17;
+  --bg-input: #0e1420;
+  --bg-soft: #131a29;
+  --bg-hover: #192132;
+  --border: #1c2636;
+  --border-soft: #131a29;
+  --toast-bg: #0b1424;
+  --chip-bg: #2a2f3a;
+  --chip-text: #9fadc0;
+  --text: #ffffff;
+  --text-85: rgba(255, 255, 255, 0.85);
+  --text-body: #f5f7fa;
+  --text-dim: #9fadc0;
+  --text-muted: #64748b;
+  --text-faint: #4b5565;
+  --danger-line: #36222b;
+  --danger-bg: #12101a;
+  --hover-fill: rgba(255, 255, 255, 0.06);
+  --dot: rgba(148, 163, 184, 0.14);
+  --shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --soft-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #eff2f6;
+  --bg-band: #e9edf2;
+  --bg-elevated: #ffffff;
+  --bg-input: #ffffff;
+  --bg-soft: #e4e9f0;
+  --bg-hover: #dce3ec;
+  --border: #d4dbe3;
+  --border-soft: #e1e6ed;
+  --toast-bg: #ffffff;
+  --chip-bg: #e4e9f0;
+  --chip-text: #3a4557;
+  --text: #0b1120;
+  --text-85: rgba(11, 17, 32, 0.85);
+  --text-body: #222a38;
+  --text-dim: #3c4757;
+  --text-muted: #5a6679;
+  --text-faint: #6c778b;
+  --danger-line: #f0cbd6;
+  --danger-bg: #fdf1f4;
+  --hover-fill: rgba(11, 17, 32, 0.05);
+  --dot: rgba(71, 85, 105, 0.18);
+  --shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+  --soft-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
+  color-scheme: light;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #06080d;
-  color: #f5f7fa;
+  background-color: var(--bg);
+  color: var(--text-body);
   font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 ::selection {
@@ -20,7 +75,7 @@ body {
 }
 
 .dot-grid {
-  background-image: radial-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
@@ -53,4 +108,21 @@ body {
 .spinner-sm {
   width: 14px;
   height: 14px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chip-bg);
 }

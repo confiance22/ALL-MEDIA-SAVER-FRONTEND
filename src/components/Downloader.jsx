@@ -9,7 +9,7 @@ function TypeBadge({ type }) {
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide ${
-        video ? 'bg-blue/15 text-blue' : 'bg-[#2A2F3A] text-[#9FADC0]'
+        video ? 'bg-blue/15 text-blue' : 'bg-[var(--chip-bg)] text-[var(--chip-text)]'
       }`}
     >
       {video ? 'Video' : 'Photo'}
@@ -118,7 +118,7 @@ export default function Downloader() {
     <div id="downloader" className="w-full max-w-[720px]">
       <form
         onSubmit={handleSubmit}
-        className="rounded-2xl border border-[#1C2636] bg-[#0B0F17] p-4 shadow-xl shadow-black/40 sm:p-5"
+        className="rounded-2xl border border-[var(--border)] bg-[var(--bg-elevated)] p-4 shadow-xl shadow-[var(--shadow)] sm:p-5"
       >
         <div className="flex flex-col gap-2.5 sm:flex-row">
           <input
@@ -128,7 +128,7 @@ export default function Downloader() {
             placeholder={GRAB_LABEL}
             autoComplete="off"
             spellCheck="false"
-            className="h-12 flex-1 rounded-xl border border-[#1C2636] bg-[#0E1420] px-4 text-[14px] text-white placeholder-[#4B5565] outline-none transition-colors focus:border-blue"
+            className="h-12 flex-1 rounded-xl border border-[var(--border)] bg-[var(--bg-input)] px-4 text-[14px] text-[var(--text)] placeholder-[var(--text-faint)] outline-none transition-colors focus:border-blue"
           />
           <button
             type="button"
@@ -158,15 +158,15 @@ export default function Downloader() {
         </div>
 
         {error && (
-          <p className="mt-4 rounded-xl border border-[#36222B] bg-[#12101A] px-4 py-3 text-[13px] leading-relaxed text-[#FB7185]">
+          <p className="mt-4 rounded-xl border border-[var(--danger-line)] bg-[var(--danger-bg)] px-4 py-3 text-[13px] leading-relaxed text-[#FB7185]">
             {error}
           </p>
         )}
 
         {result && (
-          <div className="mt-4 rounded-xl border border-[#192132] bg-[#0E1420] p-4">
+          <div className="mt-4 rounded-xl border border-[var(--bg-hover)] bg-[var(--bg-input)] p-4">
             <div className="flex items-center justify-between gap-3">
-              <p className="min-w-0 truncate text-[13px] font-medium text-white">
+              <p className="min-w-0 truncate text-[13px] font-medium text-[var(--text)]">
                 {result.title || 'Untitled post'}
               </p>
               <span
@@ -175,7 +175,7 @@ export default function Downloader() {
                     ? 'bg-blue/15 text-blue'
                     : result.type === 'video'
                       ? 'bg-blue/15 text-blue'
-                      : 'bg-[#2A2F3A] text-[#9FADC0]'
+                      : 'bg-[var(--chip-bg)] text-[var(--chip-text)]'
                 }`}
               >
                 {result.type === 'carousel'
@@ -190,7 +190,7 @@ export default function Downloader() {
               {result.items.map((item, i) => (
                 <div
                   key={`${item.filename}-${i}`}
-                  className="flex items-center gap-3 rounded-xl border border-[#1C2636] bg-[#0B0F17] px-3.5 py-3"
+                  className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--bg-elevated)] px-3.5 py-3"
                 >
                   {item.thumbnail ? (
                     <img
@@ -202,10 +202,10 @@ export default function Downloader() {
                         e.currentTarget.src =
                           'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
                       }}
-                      className="h-12 w-12 shrink-0 rounded-lg border border-[#1C2636] object-cover"
+                      className="h-12 w-12 shrink-0 rounded-lg border border-[var(--border)] object-cover"
                     />
                   ) : (
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[#131A29] text-[#9FADC0]">
+                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[var(--bg-soft)] text-[var(--text-dim)]">
                       {item.type === 'video' ? (
                         <VideoIcon className="h-[18px] w-[18px]" />
                       ) : (
@@ -214,7 +214,7 @@ export default function Downloader() {
                     </span>
                   )}
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-[12px] font-medium text-white/85">
+                    <p className="truncate text-[12px] font-medium text-[var(--text-85)]">
                       {item.filename}
                     </p>
                     <div className="mt-0.5">
@@ -242,16 +242,16 @@ export default function Downloader() {
         )}
 
         {!error && !result && (
-          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[#131A29] pt-4">
-            <span className="inline-flex items-center gap-1.5 text-[11px] text-[#64748B]">
+          <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-[var(--border-soft)] pt-4">
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
               <CheckIcon className="h-3.5 w-3.5 text-blue" />
               Videos & photos
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] text-[#64748B]">
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
               <CheckIcon className="h-3.5 w-3.5 text-blue" />
               Full carousels
             </span>
-            <span className="inline-flex items-center gap-1.5 text-[11px] text-[#64748B]">
+            <span className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
               <CheckIcon className="h-3.5 w-3.5 text-blue" />
               No watermark
             </span>
@@ -262,7 +262,7 @@ export default function Downloader() {
       {toast && (
         <div
           role="status"
-          className="fixed bottom-5 left-1/2 z-50 w-[calc(100%-2rem)] max-w-[420px] -translate-x-1/2 rounded-xl border border-[#2A6BFF]/40 bg-[#0B1424] px-4 py-3 text-center text-[13px] font-medium text-white shadow-xl shadow-black/50"
+          className="fixed bottom-5 left-1/2 z-50 w-[calc(100%-2rem)] max-w-[420px] -translate-x-1/2 rounded-xl border border-blue/40 bg-[var(--toast-bg)] px-4 py-3 text-center text-[13px] font-medium text-[var(--text)] shadow-xl shadow-[var(--soft-shadow)]"
         >
           {toast}
         </div>

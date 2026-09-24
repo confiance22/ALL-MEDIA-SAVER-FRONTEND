@@ -62,6 +62,19 @@ export const MenuIcon = ({ className = '' }) => (
   </svg>
 )
 
+export const SunIcon = ({ className = '' }) => (
+  <svg className={className} viewBox="0 0 24 24" {...base}>
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2.5V5M12 19v2.5M2.5 12H5M19 12h2.5M5 5l1.75 1.75M17.25 17.25L19 19M19 5l-1.75 1.75M6.75 17.25L5 19" />
+  </svg>
+)
+
+export const MoonIcon = ({ className = '' }) => (
+  <svg className={className} viewBox="0 0 24 24" {...base}>
+    <path d="M20.5 13.5A8.5 8.5 0 0110.5 3.5a8.5 8.5 0 1010 10z" />
+  </svg>
+)
+
 export const ClipboardIcon = ({ className = '' }) => (
   <svg className={className} viewBox="0 0 24 24" {...base}>
     <rect x="6" y="4" width="12" height="17" rx="2.5" />

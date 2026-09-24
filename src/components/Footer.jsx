@@ -1,35 +1,35 @@
 export default function Footer() {
   const year = new Date().getFullYear()
   return (
-    <footer className="border-t border-[#131A29] bg-[#080B12]">
+    <footer className="border-t border-[var(--border-soft)] bg-[var(--bg-band)]">
       <div className="mx-auto max-w-[1200px] px-5 py-12 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-8 sm:flex-row sm:items-center">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="Media Saver" className="h-12 w-auto" />
+            <img src="/logo.png" alt="All Media Saver" className="h-12 w-auto" />
             <div>
-              <p className="text-[14px] font-semibold text-white">Media Saver</p>
-              <p className="text-[11px] text-[#64748B]">
+              <p className="text-[14px] font-semibold text-[var(--text)]">All Media Saver</p>
+              <p className="text-[11px] text-[var(--text-muted)]">
                 Your own TikTok, Instagram, YouTube & X downloader
               </p>
             </div>
           </div>
-          <p className="max-w-sm text-[12px] leading-[1.6] text-[#64748B]">
+          <p className="max-w-sm text-[12px] leading-[1.6] text-[var(--text-muted)]">
             Personal tool. Nothing is stored server-side, files stream straight to your
             device. Not affiliated with TikTok, Instagram, YouTube, or X.
           </p>
         </div>
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[#131A29] pt-6 sm:flex-row">
-          <p className="text-[11px] text-[#4B5565]">
-            © {year} Media Saver. For personal use only.
+        <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[var(--border-soft)] pt-6 sm:flex-row">
+          <p className="text-[11px] text-[var(--text-faint)]">
+            © {year} All Media Saver. For personal use only.
           </p>
-          <p className="inline-flex items-center gap-1.5 text-[11px] text-[#64748B]">
+          <p className="inline-flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
             Built by{' '}
             <a
               href="https://confiance-portifolio.vercel.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-semibold text-white transition-colors hover:text-blue"
+              className="font-semibold text-[var(--text)] transition-colors hover:text-blue"
             >
               Dev.Confiance
             </a>
@@ -39,13 +39,13 @@ export default function Footer() {
             </svg>
           </p>
           <div className="flex gap-5">
-            <a href="#top" className="text-[11px] text-[#64748B] transition-colors hover:text-white">
+            <a href="#top" className="text-[11px] text-[var(--text-muted)] transition-colors hover:text-[var(--text)]">
               Back to top
             </a>
-            <a href="#how" className="text-[11px] text-[#64748B] transition-colors hover:text-white">
+            <a href="#how" className="text-[11px] text-[var(--text-muted)] transition-colors hover:text-[var(--text)]">
               How it works
             </a>
-            <a href="#platforms" className="text-[11px] text-[#64748B] transition-colors hover:text-white">
+            <a href="#platforms" className="text-[11px] text-[var(--text-muted)] transition-colors hover:text-[var(--text)]">
               Supported
             </a>
           </div>
