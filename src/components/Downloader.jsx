@@ -25,8 +25,17 @@ export default function Downloader() {
   const [result, setResult] = useState(null)
   const [toast, setToast] = useState(null)
   const toastTimer = useRef(null)
+  const inputRef = useRef(null)
 
   const busy = loading
+
+  function handleReset() {
+    setResult(null)
+    setError(null)
+    setSaving(null)
+    setUrl('')
+    if (inputRef.current) inputRef.current.focus()
+  }
 
   function showToast(message) {
     setToast(message)
@@ -122,6 +131,7 @@ export default function Downloader() {
       >
         <div className="flex flex-col gap-2.5 sm:flex-row">
           <input
+            ref={inputRef}
             type="url"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
@@ -155,6 +165,29 @@ export default function Downloader() {
               </>
             )}
           </button>
+          {(result || error) && !loading && (
+            <button
+              type="button"
+              onClick={handleReset}
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-[var(--border)] bg-transparent px-5 text-sm font-semibold text-[var(--text-dim)] transition-all duration-200 hover:border-[var(--bg-hover)] hover:text-[var(--text)] active:scale-[0.98]"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+              >
+                <path d="M21 4v6h-6" />
+                <path d="M3.5 9a9 9 0 0 1 16-3.5L21 10" />
+                <path d="M3 20v-6h6" />
+                <path d="M20.5 15a9 9 0 0 1-16 3.5L3 14" />
+              </svg>
+              Reset
+            </button>
+          )}
         </div>
 
         {error && (
