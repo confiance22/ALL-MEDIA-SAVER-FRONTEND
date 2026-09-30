@@ -81,41 +81,14 @@ export default function Downloader() {
     setError(null)
     try {
       const href = await stashDownload(item)
-      if (item.audio_url) {
-        const a = document.createElement('a')
-        a.href = href
-        a.rel = 'noopener'
-        a.target = '_blank'
-        document.body.appendChild(a)
-        a.click()
-        a.remove()
-        showToast('Download started, check your Downloads folder')
-        return
-      }
-      const res = await fetch(href)
-      if (!res.ok) {
-        let message = `Download failed (${res.status})`
-        try {
-          const data = await res.json()
-          if (data?.detail) {
-            message = typeof data.detail === 'string' ? data.detail : message
-          }
-        } catch {
-          /* keep default message */
-        }
-        setError(message)
-        return
-      }
-      const blob = await res.blob()
-      const objectUrl = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      a.href = objectUrl
-      a.download = item.filename
+      a.href = href
+      a.rel = 'noopener'
+      a.target = '_blank'
       document.body.appendChild(a)
       a.click()
       a.remove()
-      URL.revokeObjectURL(objectUrl)
-      showToast(`Saved to Downloads: ${item.filename}`)
+      showToast('Download started, check your Downloads folder')
     } catch (err) {
       setError(err.message || 'Download failed')
     } finally {
