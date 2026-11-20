@@ -5,6 +5,7 @@ import { getTheme, toggleTheme } from '../lib/theme.js'
 const LINKS = [
   { label: 'How it works', href: '#how' },
   { label: 'Supported', href: '#platforms' },
+  { label: 'Mobile app', href: '#mobile' },
 ]
 
 function waitForPrompt() {

@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx'
 import Downloader from './components/Downloader.jsx'
 import HowItWorks from './components/HowItWorks.jsx'
 import Platforms from './components/Platforms.jsx'
+import MobileApp from './components/MobileApp.jsx'
 import Footer from './components/Footer.jsx'
 import { GalleryIcon, ImageIcon, VideoIcon } from './components/Icons.jsx'
 
@@ -56,6 +57,7 @@ function App() {
 
         <HowItWorks />
         <Platforms />
+        <MobileApp />
       </main>
 
       <Footer />
