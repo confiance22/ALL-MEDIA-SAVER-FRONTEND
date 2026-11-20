@@ -12,7 +12,7 @@ import {
 
 const APK_URL =
   import.meta.env.VITE_APK_URL ||
-  'https://github.com/confiance22/ALL-MEDIA-SAVER-FRONTEND/releases/latest'
+  'https://github.com/confiance22/ALL-MEDIA-SAVER-FRONTEND/releases/download/mobile-latest/app-release.apk'
 
 const FEATURES = [
   'Works the moment you open it, no sign in and no registration',
