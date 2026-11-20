@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api.dart';
 import 'config.dart';
 import 'history_store.dart';
 import 'models.dart';
+import 'screens/about_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/home_screen.dart';
+import 'widgets/glass.dart';
 
 const String _themeKey = 'ams_theme_mode';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations(<DeviceOrientation>[
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   final prefs = await SharedPreferences.getInstance();
   final savedIndex = prefs.getInt(_themeKey);
   final savedMode = savedIndex != null &&
@@ -43,6 +50,24 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
   late final ValueNotifier<String> _urlInput;
   late ThemeMode _themeMode;
   int _selectedIndex = 0;
+
+  static const List<NavItem> _navItems = <NavItem>[
+    NavItem(
+      icon: Icons.download_rounded,
+      activeIcon: Icons.download_rounded,
+      label: 'Download',
+    ),
+    NavItem(
+      icon: Icons.history_rounded,
+      activeIcon: Icons.history_rounded,
+      label: 'History',
+    ),
+    NavItem(
+      icon: Icons.info_outline_rounded,
+      activeIcon: Icons.info_rounded,
+      label: 'About',
+    ),
+  ];
 
   @override
   void initState() {
@@ -95,6 +120,7 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
     final isDark = _themeMode == ThemeMode.dark ||
         (_themeMode == ThemeMode.system &&
             MediaQuery.platformBrightnessOf(context) == Brightness.dark);
+    final viewBottom = MediaQuery.viewPaddingOf(context).bottom;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -103,42 +129,43 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
       darkTheme: _buildTheme(Brightness.dark),
       themeMode: _themeMode,
       home: Scaffold(
-        body: SafeArea(
-          child: IndexedStack(
-            index: _selectedIndex,
-            children: [
-              HomeScreen(
-                api: _api,
-                history: _history,
-                urlInput: _urlInput,
-                isDark: isDark,
-                onToggleTheme: _toggleTheme,
-                onAddHistory: _addHistory,
-                onGoHistory: () => setState(() => _selectedIndex = 1),
+        body: Stack(
+          children: <Widget>[
+            AmbientBackground(isDark: isDark),
+            Positioned.fill(
+              bottom: 96 + viewBottom,
+              child: SafeArea(
+                bottom: false,
+                child: IndexedStack(
+                  index: _selectedIndex,
+                  children: <Widget>[
+                    HomeScreen(
+                      api: _api,
+                      history: _history,
+                      urlInput: _urlInput,
+                      isDark: isDark,
+                      onToggleTheme: _toggleTheme,
+                      onAddHistory: _addHistory,
+                      onGoHistory: () => setState(() => _selectedIndex = 1),
+                    ),
+                    HistoryScreen(
+                      history: _history,
+                      onOpenLink: _openFromHistory,
+                      onRemove: _removeHistory,
+                      onClear: _clearHistory,
+                    ),
+                    AboutScreen(
+                      isDark: isDark,
+                      onToggleTheme: _toggleTheme,
+                    ),
+                  ],
+                ),
               ),
-              HistoryScreen(
-                history: _history,
-                onOpenLink: _openFromHistory,
-                onRemove: _removeHistory,
-                onClear: _clearHistory,
-              ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _selectedIndex,
-          onDestinationSelected: (index) =>
-              setState(() => _selectedIndex = index),
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.download_rounded),
-              selectedIcon: Icon(Icons.download_rounded),
-              label: 'Download',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.history_rounded),
-              selectedIcon: Icon(Icons.history_rounded),
-              label: 'History',
+            FloatingNavBar(
+              selectedIndex: _selectedIndex,
+              items: _navItems,
+              onSelected: (index) => setState(() => _selectedIndex = index),
             ),
           ],
         ),
@@ -159,13 +186,19 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
       surfaceContainerHighest:
           isDark ? const Color(0xFF131A29) : const Color(0xFFE4E9F0),
     );
-    final outline = scheme.outlineVariant.withOpacity(0.45);
+    final outline = scheme.outlineVariant.withOpacity(isDark ? 0.4 : 0.5);
 
     return ThemeData(
       useMaterial3: true,
       colorScheme: scheme,
       scaffoldBackgroundColor:
-          isDark ? const Color(0xFF06080D) : const Color(0xFFEFF2F6),
+          isDark ? const Color(0xFF06080D) : const Color(0xFFEEF2FA),
+      listTileTheme: ListTileThemeData(
+        tileColor: Colors.transparent,
+        selectedTileColor: Colors.transparent,
+        iconColor: scheme.primary,
+      ),
+      dividerTheme: DividerThemeData(color: outline),
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
@@ -174,7 +207,9 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: isDark ? const Color(0xFF0E1420) : Colors.white,
+        fillColor: isDark
+            ? Colors.white.withOpacity(0.06)
+            : Colors.white.withOpacity(0.6),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
         hintStyle: TextStyle(
@@ -191,7 +226,7 @@ class _AllMediaSaverAppState extends State<AllMediaSaverApp> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(color: scheme.primary, width: 1.5),
+          borderSide: const BorderSide(color: Color(0xFF2F6BFF), width: 1.6),
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(

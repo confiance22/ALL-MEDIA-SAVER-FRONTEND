@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models.dart';
+import '../widgets/glass.dart';
 import '../widgets/ui.dart';
 
 class HistoryScreen extends StatelessWidget {
@@ -41,10 +42,25 @@ class HistoryScreen extends StatelessWidget {
                   width: 46,
                   height: 46,
                   decoration: BoxDecoration(
-                    color: scheme.primary.withOpacity(0.12),
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[Color(0xFF2F6BFF), Color(0xFF7C5CFF)],
+                    ),
                     borderRadius: BorderRadius.circular(16),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: const Color(0xFF2F6BFF).withOpacity(0.38),
+                        blurRadius: 18,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  child: Icon(Icons.history_rounded, color: scheme.primary, size: 22),
+                  child: const Icon(
+                    Icons.history_rounded,
+                    color: Colors.white,
+                    size: 22,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -84,6 +100,70 @@ class HistoryScreen extends StatelessWidget {
                 height: 1.5,
               ),
             ),
+            const SizedBox(height: 18),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: GlassCard(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${entries.length}',
+                          style: TextStyle(
+                            color: scheme.onSurface,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Total saved',
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: GlassCard(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '${entries.where((e) => e.kind == HistoryKind.download).length}',
+                          style: TextStyle(
+                            color: scheme.onSurface,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Downloads',
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 20),
             if (entries.isEmpty)
               AppCard(
@@ -94,12 +174,23 @@ class HistoryScreen extends StatelessWidget {
                       width: 64,
                       height: 64,
                       decoration: BoxDecoration(
-                        color: scheme.primary.withOpacity(0.1),
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: <Color>[Color(0xFF2F6BFF), Color(0xFF7C5CFF)],
+                        ),
                         borderRadius: BorderRadius.circular(22),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: const Color(0xFF7C5CFF).withOpacity(0.35),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.auto_stories_rounded,
-                        color: scheme.primary,
+                        color: Colors.white,
                         size: 28,
                       ),
                     ),
@@ -157,16 +248,32 @@ class HistoryScreen extends StatelessWidget {
                               width: 42,
                               height: 42,
                               decoration: BoxDecoration(
-                                color: scheme.primary.withOpacity(
-                                  entry.kind == HistoryKind.download ? 0.14 : 0.08,
-                                ),
+                                gradient: entry.kind == HistoryKind.download
+                                    ? const LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: <Color>[
+                                          Color(0xFF2F6BFF),
+                                          Color(0xFF7C5CFF),
+                                        ],
+                                      )
+                                    : LinearGradient(
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: <Color>[
+                                          const Color(0xFF2F6BFF).withOpacity(0.18),
+                                          const Color(0xFF7C5CFF).withOpacity(0.1),
+                                        ],
+                                      ),
                                 borderRadius: BorderRadius.circular(14),
                               ),
                               child: Icon(
                                 entry.kind == HistoryKind.download
                                     ? Icons.download_rounded
                                     : Icons.link_rounded,
-                                color: scheme.primary,
+                                color: entry.kind == HistoryKind.download
+                                    ? Colors.white
+                                    : scheme.primary,
                                 size: 19,
                               ),
                             ),

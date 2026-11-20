@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../api.dart';
 import '../models.dart';
+import '../widgets/glass.dart';
 import '../widgets/ui.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -171,16 +172,25 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         _buildHeader(scheme),
         const SizedBox(height: 22),
-        Text(
-          'Save anything. No sign in needed.',
-          style: TextStyle(
-            color: scheme.onSurface,
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            letterSpacing: -0.5,
+        ShaderMask(
+          blendMode: BlendMode.srcIn,
+          shaderCallback: (bounds) => const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[Color(0xFF4E8BFF), Color(0xFF9B6CFF)],
+          ).createShader(bounds),
+          child: Text(
+            'Save anything.\nNo sign in needed.',
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 25,
+              fontWeight: FontWeight.w800,
+              height: 1.18,
+              letterSpacing: -0.6,
+            ),
           ),
         ),
-        const SizedBox(height: 6),
+        const SizedBox(height: 8),
         Text(
           'Paste a link from TikTok, Instagram, YouTube or X and keep the file.',
           style: TextStyle(
@@ -231,9 +241,33 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         if (_loading) ...[
-          const SizedBox(height: 26),
+          const SizedBox(height: 22),
           Center(
-            child: CircularProgressIndicator(color: scheme.primary, strokeWidth: 2.5),
+            child: GlassCard(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 13),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    width: 17,
+                    height: 17,
+                    child: CircularProgressIndicator(
+                      color: scheme.primary,
+                      strokeWidth: 2.2,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Text(
+                    'Finding your media...',
+                    style: TextStyle(
+                      color: scheme.onSurface,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
         if (_result != null) ...[
@@ -260,11 +294,18 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 46,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
-              colors: [Color(0xFF2F6BFF), Color(0xFF0A2E80)],
+              colors: <Color>[Color(0xFF2F6BFF), Color(0xFF7C5CFF)],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
             borderRadius: BorderRadius.circular(16),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                color: const Color(0xFF2F6BFF).withOpacity(0.38),
+                blurRadius: 18,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: const Center(
             child: Text(
@@ -294,21 +335,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: scheme.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: scheme.outlineVariant.withOpacity(0.45)),
-          ),
-          child: IconButton(
-            tooltip: widget.isDark ? 'Light theme' : 'Dark theme',
-            onPressed: widget.onToggleTheme,
-            icon: Icon(
-              widget.isDark ? Icons.wb_sunny_rounded : Icons.dark_mode_rounded,
-              size: 19,
-              color: scheme.primary,
-            ),
-          ),
+        GlassIconButton(
+          tooltip: widget.isDark ? 'Light theme' : 'Dark theme',
+          onPressed: widget.onToggleTheme,
+          icon: widget.isDark ? Icons.wb_sunny_rounded : Icons.dark_mode_rounded,
         ),
       ],
     );
@@ -330,11 +360,15 @@ class _HomeScreenState extends State<HomeScreen> {
             onSubmitted: (_) => _submit(),
             decoration: InputDecoration(
               hintText: 'https://www.tiktok.com/@user/video/123456...',
-              prefixIcon: Icon(Icons.link_rounded, color: scheme.primary, size: 19),
-              suffixIcon: IconButton(
-                tooltip: 'Paste from clipboard',
-                onPressed: _paste,
-                icon: Icon(Icons.content_paste_rounded, color: scheme.onSurfaceVariant, size: 18),
+              prefixIcon: Icon(Icons.link_rounded, color: scheme.primary, size: 20),
+              suffixIcon: Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: GlassIconButton(
+                  tooltip: 'Paste from clipboard',
+                  onPressed: _paste,
+                  icon: Icons.content_paste_rounded,
+                  size: 36,
+                ),
               ),
             ),
           ),
@@ -421,11 +455,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildItemRow(MediaItem item, ColorScheme scheme) {
     final busy = _saving == item.filename;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: scheme.surfaceContainerHighest.withOpacity(0.55),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? <Color>[
+                  Colors.white.withOpacity(0.07),
+                  Colors.white.withOpacity(0.025),
+                ]
+              : <Color>[
+                  Colors.white.withOpacity(0.55),
+                  Colors.white.withOpacity(0.3),
+                ],
+        ),
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withOpacity(0.09)
+              : Colors.white.withOpacity(0.7),
+        ),
       ),
       child: Row(
         children: [
@@ -464,27 +516,48 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(width: 8),
-          Material(
-            color: scheme.primary,
-            borderRadius: BorderRadius.circular(14),
-            child: InkWell(
-              onTap: busy ? null : () => _download(item),
+          Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: <Color>[Color(0xFF2F6BFF), Color(0xFF7C5CFF)],
+              ),
               borderRadius: BorderRadius.circular(14),
-              child: SizedBox(
-                width: 38,
-                height: 38,
-                child: busy
-                    ? Center(
-                        child: SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            color: scheme.onPrimary,
-                            strokeWidth: 2,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: const Color(0xFF2F6BFF).withOpacity(0.38),
+                  blurRadius: 14,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(14),
+              child: InkWell(
+                onTap: busy ? null : () => _download(item),
+                borderRadius: BorderRadius.circular(14),
+                child: SizedBox(
+                  width: 38,
+                  height: 38,
+                  child: busy
+                      ? const Center(
+                          child: SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
                           ),
+                        )
+                      : const Icon(
+                          Icons.download_rounded,
+                          size: 18,
+                          color: Colors.white,
                         ),
-                      )
-                    : Icon(Icons.download_rounded, size: 18, color: scheme.onPrimary),
+                ),
               ),
             ),
           ),
@@ -546,14 +619,28 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 36,
                         height: 36,
                         decoration: BoxDecoration(
-                          color: scheme.primary.withOpacity(0.12),
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors: entry.kind == HistoryKind.download
+                                ? const <Color>[
+                                    Color(0xFF2F6BFF),
+                                    Color(0xFF7C5CFF),
+                                  ]
+                                : <Color>[
+                                    Color(0xFF2F6BFF).withOpacity(0.18),
+                                    Color(0xFF7C5CFF).withOpacity(0.1),
+                                  ],
+                          ),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Icon(
                           entry.kind == HistoryKind.download
                               ? Icons.download_rounded
                               : Icons.search_rounded,
-                          color: scheme.primary,
+                          color: entry.kind == HistoryKind.download
+                              ? Colors.white
+                              : scheme.primary,
                           size: 18,
                         ),
                       ),

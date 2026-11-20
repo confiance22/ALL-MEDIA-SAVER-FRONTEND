@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'glass.dart';
+
 class AppCard extends StatelessWidget {
   const AppCard({
     super.key,
@@ -18,30 +20,22 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    final card = Container(
-      margin: margin,
+    return GlassCard(
       padding: padding,
-      decoration: BoxDecoration(
-        color: scheme.surface,
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: borderColor ?? scheme.outlineVariant.withOpacity(0.45),
-        ),
-      ),
-      child: child,
-    );
-    if (onTap == null) return card;
-    return InkWell(
+      margin: margin,
       onTap: onTap,
-      borderRadius: BorderRadius.circular(28),
-      child: card,
+      child: child,
     );
   }
 }
 
 class SectionTitle extends StatelessWidget {
-  const SectionTitle({super.key, required this.title, this.action, this.onAction});
+  const SectionTitle({
+    super.key,
+    required this.title,
+    this.action,
+    this.onAction,
+  });
 
   final String title;
   final String? action;
@@ -52,14 +46,31 @@ class SectionTitle extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: scheme.onSurface,
-            fontSize: 16,
-            fontWeight: FontWeight.w700,
-          ),
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            Container(
+              width: 4,
+              height: 16,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: <Color>[Color(0xFF2F6BFF), Color(0xFF7C5CFF)],
+                ),
+                borderRadius: BorderRadius.circular(999),
+              ),
+            ),
+            const SizedBox(width: 9),
+            Text(
+              title,
+              style: TextStyle(
+                color: scheme.onSurface,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          ],
         ),
         if (action != null && onAction != null)
           TextButton(
@@ -83,15 +94,21 @@ class TypeBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final scheme = Theme.of(context).colorScheme;
     final color = primary ? scheme.primary : scheme.onSurfaceVariant;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
       decoration: BoxDecoration(
         color: primary
-            ? scheme.primary.withOpacity(0.14)
-            : scheme.surfaceContainerHighest.withOpacity(0.75),
+            ? const Color(0xFF2F6BFF).withOpacity(isDark ? 0.2 : 0.12)
+            : Colors.white.withOpacity(isDark ? 0.06 : 0.5),
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(
+          color: primary
+              ? const Color(0xFF2F6BFF).withOpacity(0.35)
+              : scheme.outlineVariant.withOpacity(0.3),
+        ),
       ),
       child: Text(
         label.toUpperCase(),
@@ -114,27 +131,53 @@ class PlatformChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final scheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: scheme.surface,
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark
+              ? <Color>[
+                  Colors.white.withOpacity(0.09),
+                  Colors.white.withOpacity(0.035),
+                ]
+              : <Color>[
+                  Colors.white.withOpacity(0.8),
+                  Colors.white.withOpacity(0.5),
+                ],
+        ),
         borderRadius: BorderRadius.circular(999),
-        border: Border.all(color: scheme.outlineVariant.withOpacity(0.45)),
+        border: Border.all(
+          color: isDark
+              ? Colors.white.withOpacity(0.12)
+              : Colors.white.withOpacity(0.9),
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(isDark ? 0.18 : 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: [
+        children: <Widget>[
           Container(
-            width: 18,
-            height: 18,
+            width: 8,
+            height: 8,
             decoration: BoxDecoration(
-              color: color.withOpacity(0.16),
-              borderRadius: BorderRadius.circular(7),
+              color: color,
+              shape: BoxShape.circle,
+              boxShadow: <BoxShadow>[
+                BoxShadow(color: color.withOpacity(0.6), blurRadius: 8),
+              ],
             ),
-            child: Icon(Icons.bolt_rounded, size: 11, color: color),
           ),
-          const SizedBox(width: 7),
+          const SizedBox(width: 8),
           Text(
             label,
             style: TextStyle(
